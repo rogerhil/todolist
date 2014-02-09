@@ -1,0 +1,17 @@
+
+body {
+  padding-top: 50px;
+}
+
+.starter-template {
+  padding: 40px 15px;
+  text-align: center;
+}
+
+.helptext {
+    font-size: 12px;
+    color: #999999;
+    display: block;
+    text-align: left;
+    margin-left: 5px;
+}

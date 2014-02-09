@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="/media/css/login.css" type="text/css" media="screen" title="default" />
+{% endblock %}
+
+{% block content %}
+    <form class="form-signin" role="form" action="{% url 'sign_in' %}{% if next %}?next={{ next }}{% endif %}" method="post">
+        <h2 class="form-signin-heading">{% trans "Sign In" %}</h2>
+        {% csrf_token %}
+        {{ form.as_bootstrap }}
+        <button class="btn btn-lg btn-primary btn-block" type="submit">{% trans 'Sign In' %}</button>
+    </form>
+{% endblock %}
+
