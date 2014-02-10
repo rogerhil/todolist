@@ -21,12 +21,12 @@
 class Choices:
     """ Base class for choices classes.
     
-    >>> class Chord(Choice):
+    >>> class ChordType(Choices):
     ...     major = 1
     ...     minor = 2
 
-    >>> Chord.choices()
-    [(1, major), (2, minor)]
+    >>> ChordType.choices()
+    [(1, 'Major'), (2, 'Minor')]
     """
 
     @classmethod
@@ -46,3 +46,8 @@ class Choices:
         """ Returns the title value of a choice.
         """
         return dict(cls.choices()).get(key)
+
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()

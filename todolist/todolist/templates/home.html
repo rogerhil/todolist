@@ -11,14 +11,41 @@
             {% trans "This is the main page."%}
         </p>
         <br/>
-        <h3>
-            {% trans "Your API key id is:" %}
-        </h3>
         {% if user.api_key %}
+            <h3>
+                {% trans "Your API key id is:" %}
+            </h3>
             <div class="well">
                 <h2>
                     {{ user.api_key.key }}
                 </h2>
+            </div>
+            <br/>
+            <h2 style="color: #2b542c;">{% trans "CURL commands examples" %}</h2>
+
+            <h3>GET</h3>
+            <div class="well">
+                <p>curl -H "Accept: application/json" -H "Authorization: ApiKey {{ user.username }}:{{ user.api_key.key }}" /api/todo/?format=json</p>
+            </div>
+            <h3>GET details</h3>
+            <div class="well">
+                <p>curl -H "Accept: application/json" -H "Authorization: ApiKey {{ user.username }}:{{ user.api_key.key }}" /api/todo/65/?format=json</p>
+            </div>
+            <h3>DELETE</h3>
+            <div class="well">
+                <p>curl -X DELETE -H "Accept: application/json" -H "Authorization: ApiKey {{ user.username }}:{{ user.api_key.key }}" /api/todo/65/</p>
+            </div>
+            <h3>DELETE all</h3>
+            <div class="well">
+                <p>curl -X DELETE -H "Accept: application/json" -H "Authorization: ApiKey {{ user.username }}:{{ user.api_key.key }}" /api/todo/</p>
+            </div>
+            <h3>POST</h3>
+            <div class="well">
+                <p>curl -X POST -H "Accept: application/json" -H "Content-type: application/json" -H "Authorization: ApiKey {{ user.username }}:{{ user.api_key.key }}" /api/todo/ -d '{"description": "NEW", "priority": 3, "due_date": "2014-02-20 20:00"}'</p>
+            </div>
+            <h3>PUT</h3>
+            <div class="well">
+                <p>curl -X PUT -H "Accept: application/json" -H "Content-type: application/json" -H "Authorization: ApiKey {{ user.username }}:{{ user.api_key.key }}" /api/todo/64/ -d '{"description": "CHANGED", "priority": 3, "due_date": "2014-02-20 20:00"}'</p>
             </div>
         {% endif %}
     </div>

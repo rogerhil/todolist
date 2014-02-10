@@ -40,7 +40,7 @@ class Listing(ListView):
     """
     model = Todo
     context_object_name = 'todo_list'
-    paginate_by = 5
+    paginate_by = 10
     sorting_fields = [
         'description',
         'due_date',
