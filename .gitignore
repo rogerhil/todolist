@@ -11,3 +11,4 @@ dist/
 .tox/
 .idea/
 tdenv/
+db.sqlite3
