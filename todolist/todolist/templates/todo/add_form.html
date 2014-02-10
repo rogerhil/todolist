@@ -1,0 +1,4 @@
+{% load i18n %}
+
+{% csrf_token %}
+{{ form.as_bootstrap_sided }} <button type="submit" class="btn btn-success">{% trans "Add" %}</button>

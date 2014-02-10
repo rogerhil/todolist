@@ -1,0 +1,83 @@
+{% load i18n %}
+
+{% if paginator.count %}
+    <table class="table table-striped" orderby="{{ order_by }}" url="{% url 'todo_listing_relaod' %}">
+        <thead>
+            <tr>
+                <th class="sorting {{ order_class.description }}" sorting="description">{% trans 'Description' %}</th>
+                <th style="width: 240px;" class="sorting {{ order_class.due_date }}" sorting="due_date">{% trans 'Due Date' %}</th>
+                <th style="width: 80px;" class="sorting  {{ order_class.priority }}" sorting="priority">{% trans 'Priority' %}</th>
+                <th style="width: 80px;" class="sorting  {{ order_class.status }}" sorting="status">{% trans 'Status' %}</th>
+                <th style="width: 40px;">{% trans 'Delete' %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for todo in page_obj %}
+                <tr todo-id="{{ todo.id }}">
+                    <td class="description">
+                        <span>
+                            {{ todo.description }}
+                        </span>
+                        <form method="post" change-description-form action="{% url 'todo_change_description' todo.id %}" data-target="#listing" style="display: none;">
+                            {% csrf_token %}
+                            <input name="description" type="text" class="form-control inline-field" value="{{ todo.description }}" />
+                            <button type="submit" class="btn btn-success btn-xs inline-button">{% trans "Change" %}</button>
+                        </form>
+                    </td>
+                    <td class="due-date">
+                        <span>
+                            {{ todo.due_date }}
+                        </span>
+                        <form method="post" change-due-date-form action="{% url 'todo_change_due_date' todo.id %}" data-target="#listing" style="display: none;">
+                            {% csrf_token %}
+                            <input name="due_date" type="text" class="form-control small-field datetimepicker-change" value="{{ todo.due_date|date:"Y-m-d H:i" }}" />
+                            <button type="submit" class="btn btn-success btn-xs inline-button">{% trans "Change" %}</button>
+                        </form>
+                    </td>
+                    <td class="center">
+                        <button type="button" class="change-priority btn btn-xs btn-{% if todo.is_low %}info{% else %}{% if todo.is_medium %}warning{% else %}danger{% endif %}{% endif %}">
+                            {{ todo.priority_display }}
+                        </button>
+                        <form method="post" change-priority-form action="{% url 'todo_change_priority' todo.id %}" data-target="#listing">
+                            {% csrf_token %}
+                            <input name="priority" type="hidden" value="" />
+                        </form>
+                    </td>
+                    <td class="center">
+                        <button type="button" class="mark-done btn btn-xs btn-{% if todo.is_done %}success{% else %}{% if todo.is_expired %}primary{% else %}warning{% endif %}{% endif %}" {% if todo.is_todo %}title="{% trans 'Mark as done' %}"{% endif %}>
+                            {{ todo.status_display }}
+                        </button>
+                        <form method="post" mark-done-form action="{% url 'todo_mark_done' todo.id %}" data-target="#listing">
+                            {% csrf_token %}
+                            <input name="status" type="hidden" value="done" />
+                        </form>
+                    </td>
+                    <td class="center">
+                        <button type="button" class="btn btn-xs btn-danger delete">
+                            <strong>{% trans "X" %}</strong>
+                        </button>
+                        <form method="post" delete-form action="{% url 'todo_delete' todo.id %}" data-target="#listing">
+                            {% csrf_token %}
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% for p in paginator.page_range %}
+        {% if page_obj.number == p %}
+            <button type="button" class="btn btn-primary inline-button">{{ p }}</button>
+            &nbsp;
+        {% else %}
+            <a href="?page={{ p }}">
+                <button type="button" class="btn btn-info inline-button">{{ p }}</button>
+            </a>&nbsp;
+        {% endif %}
+    {% endfor %}
+
+{% else %}
+    <br/>
+    <br/>
+    <p>{% trans 'No results. Add new todo entries in the form above.' %}</p>
+{% endif %}

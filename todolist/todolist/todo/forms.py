@@ -13,3 +13,22 @@
 
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+""" Contains the form for the Todo model.
+"""
+
+from django.forms import ModelForm
+
+from todolist.forms import BootstrapForm
+from todolist.noconflict import classmaker
+from todolist.todo.models import Todo
+
+
+class TodoForm(BootstrapForm, ModelForm):
+    __metaclass__ = classmaker()
+
+    class Meta:
+        model = Todo
+
+
+

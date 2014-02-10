@@ -24,6 +24,7 @@ from django.utils.html import format_html, format_html_join
 
 from todolist.noconflict import classmaker
 
+
 @python_2_unicode_compatible
 class BootstrapErrorList(ErrorList):
     """ A collection of errors that knows how to display itself in Bootstrap
@@ -44,6 +45,25 @@ class BootstrapErrorList(ErrorList):
         return format_html('{0}', text)
 
 
+class BootstrapDatetimeBoundField(forms.forms.BoundField):
+    """ This is the overwritten BoundField class to make the form compatible
+        with bootstrap datetimepicker.
+    """
+    add_on = '<span class="add-on"><i data-time-icon="icon-time" '\
+             'data-date-icon="icon-calendar"></i></span>'
+
+    def as_widget(self, *args, **kwargs):
+        """ Includes the 'datetimepicker' class in the field.
+        """
+        if not kwargs.has_key('attrs'):
+            kwargs['attrs'] = {}
+        kwargs['attrs']['data-format'] = "dd/MM/yyyy hh:mm:ss"
+        t = super(BootstrapDatetimeBoundField, self).as_widget(*args, **kwargs)
+        t = t.replace('class="', 'class="datetimepicker ')
+        t += self.add_on
+        return t
+
+
 class BootstrapForm(forms.Form):
     """ This class overrides some necessary methods for compatibility with
         the css classes of bootstrap.
@@ -51,7 +71,7 @@ class BootstrapForm(forms.Form):
 
     input_class = 'form-control'
     error_css_class = 'has-error'
-    required_css_class = 'form-group'
+    required_css_class = 'form-group input-append date'
 
     def __init__(self, *args, **kwargs):
         """ Overrides the constructor forcing our new BootstrapErrorList error
@@ -68,6 +88,8 @@ class BootstrapForm(forms.Form):
         bf = super(BootstrapForm, self).__getitem__(*args, **kwargs)
         bf.field.widget.attrs['class'] = self.input_class
         bf.field.widget.attrs['placeholder'] = bf.field.label
+        if isinstance(bf.field, forms.DateTimeField):
+            bf = BootstrapDatetimeBoundField(self, bf.field, bf.name)
         return bf
 
     def as_bootstrap(self):
@@ -81,9 +103,22 @@ class BootstrapForm(forms.Form):
         return self._html_output(normal_row, error_row, row_ender,
                                  help_text_html, False)
 
+    def as_bootstrap_sided(self):
+        """ Returns this form rendered as HTML bootstrap form with
+            fields side by side.
+        """
+        self.required_css_class += ' form-sided'
+        normal_row = '<div %(html_class_attr)s> '\
+                     '%(field)s%(help_text)s %(errors)s</div>'
+        error_row = '<div class="alert alert-danger">%s</div>'
+        row_ender = '</div>'
+        help_text_html = ' <span class="helptext">%s</span>'
+        return self._html_output(normal_row, error_row, row_ender,
+                                 help_text_html, False)
+
     @classmethod
     def transform(cls, form_class):
-        """ Transforms a FormClass to a BootstrapForm compatible.
+        """ Transforms a FormClass into a BootstrapForm compatible.
         """
         class NewClass(BootstrapForm, form_class):
             __metaclass__ = classmaker()

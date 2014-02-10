@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="/media/css/bootstrap-datetimepicker.min.css" type="text/css" media="screen" title="default" />
+{% endblock %}
+
+{% block content %}
+    <form method="post" todo-add action="{% url 'todo_add' %}" data-target="#listing">
+        {% include "todo/add_form.html" %}
+    </form>
+    <div class="clear"></div>
+    <div id="listing">
+        {% include "todo/listing.html" %}
+    </div>
+    {% include 'todo/priority_modal.html' %}
+
+{% endblock %}
+
+{% block javascript %}
+
+    <script src="/media/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="/media/js/todo.js"></script>
+    
+
+{% endblock %}

@@ -25,6 +25,8 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'^$', Homepage.as_view(), name='home'),
     url(r'^tdauth/', include('todolist.tdauth.urls')),
+    url(r'^todo/', include('todolist.todo.urls')),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
+    url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
+                                {'document_root': settings.MEDIA_ROOT}),
 )

@@ -43,7 +43,7 @@
 
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="#">Home</a></li>
-                        <li><a href="#todolist">TodoList</a></li>
+                        <li><a href="{% url 'todo_listing' %}">TodoList</a></li>
                         {% if user.is_authenticated %}
                             <li><a href="{% url 'sign_out' %}">{% trans "Sign Out" %}</a></li>
                         {% else %}
@@ -66,6 +66,7 @@
         </div><!-- /.container -->
 
         <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
         <script src="/media/js/bootstrap.min.js"></script>
         <script src="/media/js/main.js"></script>
         {% block javascript %}

@@ -1,0 +1,22 @@
+{% load i18n %}
+<div class="modal fade" id="priority_menu">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">{% trans 'Toggle Priority' %}</h4>
+            </div>
+            <div class="modal-body">
+                <button type="button" class="btn btn-xs btn-info menubutton" value="{{ priority.low }}">
+                    {% trans 'Low' %}
+                </button>
+                <button type="button" class="btn btn-xs btn-warning menubutton" value="{{ priority.medium }}">
+                    {% trans 'Medium' %}
+                </button>
+                <button type="button" class="btn btn-xs btn-danger"  value="{{ priority.high }}">
+                    {% trans 'High' %}
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

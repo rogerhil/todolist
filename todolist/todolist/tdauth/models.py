@@ -19,6 +19,8 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
 class UserProfile(models.Model):
+    """ The user profile.
+    """
     user = models.ForeignKey(User, unique=True)
     birth_date = models.DateField(_("Birth Date"), null=True, blank=True)
 
