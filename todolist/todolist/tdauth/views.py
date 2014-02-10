@@ -29,6 +29,7 @@ from django.views.generic import FormView, RedirectView, CreateView
 
 from todolist.forms import BootstrapForm
 from todolist.tdauth.decorators import login_required
+from todolist.api.authentication import *
 
 
 class SignIn(FormView):

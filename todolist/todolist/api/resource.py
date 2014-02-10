@@ -14,25 +14,25 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from django.conf import settings
-from django.conf.urls import patterns, include, url
-from django.contrib import admin
-
-from todolist.views import Homepage
+from tastypie.authentication import ApiKeyAuthentication
+from tastypie.resources import ModelResource
 
 from todolist.todo.models import Todo
-from todolist.api.resource import TodoResource
+from todolist.api.authorization import TodoAuthorization
 
-todo_resource = TodoResource()
 
-admin.autodiscover()
+class TodoResource(ModelResource):
 
-urlpatterns = patterns('',
-    url(r'^$', Homepage.as_view(), name='home'),
-    url(r'^tdauth/', include('todolist.tdauth.urls')),
-    url(r'^todo/', include('todolist.todo.urls')),
-    url(r'^admin/', include(admin.site.urls)),
-    (r'^api/', include(todo_resource.urls)),
-    url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
-                                {'document_root': settings.MEDIA_ROOT}),
-)
+    class Meta:
+        queryset = Todo.objects.all()
+        resource_name = 'todo'
+        authorization = TodoAuthorization()
+        authentication = ApiKeyAuthentication()
+
+    def obj_create(self, bundle, **kwargs):
+        """ A ORM-specific implementation of 'obj_create'.
+            Assigns the user_id argument with the current authenticated user.
+            The user_id is not required in API call.
+        """
+        kwargs['user_id'] = bundle.request.user.id
+        return super(TodoResource, self).obj_create(bundle, **kwargs)

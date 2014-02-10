@@ -8,8 +8,19 @@
     <div>
         <h1>{% trans "TodoList" %}</h1>
         <p class="lead">
-            This is the main page.
+            {% trans "This is the main page."%}
         </p>
+        <br/>
+        <h3>
+            {% trans "Your API key id is:" %}
+        </h3>
+        {% if user.api_key %}
+            <div class="well">
+                <h2>
+                    {{ user.api_key.key }}
+                </h2>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
 
